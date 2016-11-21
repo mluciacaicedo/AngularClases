@@ -8,6 +8,7 @@ var app = angular.module('AngularApp', []);
     return reemplazaLetras;
 
   });
+  angular.module('tabsDemoDynamicHeight', ['ngMaterial']);
   
 
  // app.controller('BooksController', function($scope){

@@ -3,22 +3,70 @@ extends layout
 block content
   //h1= title
   //p Welcome to #{title}
-
+  br
   .row
     .col-md-2
     div.col-md-8(ng-controller = "BooksController", ng-cloak)
       input(type='text', ng-model = 'buscar',placeholder = "Buscar...")
-      div( ng-repeat="book in books | filter: buscar", ng-hide="book.agotado")
-        h1 {{book.name }}
-        h3 {{book.autor }} - {{ book.precio |currency :"USD $":0 }} 
-        p  {{book.descripcion }}
-        button.btn.btn-primary(type="button", ng-if="book.canPurchase") Comprar
+      div(ng-repeat="book in books | filter: buscar", ng-hide="book.agotado")
+        .row
+        .col-md-6
+          img.img-responsive.container(ng-src="{{book.images }}")
+        .col-md-6
+          section(ng-controller="PanelController")
+              ul.nav.nav-tabs
+                li(role="presentation",ng-class="{active:isSelected(1)}")
+                  a(ng-click="selecTab(1)", href='') Descripcion
+                li(role="presentation",ng-class="{active:isSelected(2)}")
+                  a(ng-click="selecTab(2)", href='') Especificaciones
+                li(role="presentation",ng-class="{active:isSelected(3)}")
+                  a(ng-click="selecTab(3)", href='') Comentarios
+              br
+
+              .panel(ng-show="isSelected(1)")
+                  h4 Descripcion
+                  p  {{book.descripcion }}
+                   // p {{book.autor }} - {{ book.precio |currency :"USD $":0 }} 
+               .panel(ng-show="isSelected(2)")   
+                  h4 Especificaciones
+                  blockquote Nada aun
+              
+               .panel(ng-show="isSelected(3)")  
+                  h4 Comentarios
+                  form(name='reviewForm',ng-controller="ReviewController",ng-submit="submit()")
+                   
+                    blockquote(ng-repeat="comentarios in book.comentarios") 
+                      b{{comentarios.cuerpo}}
+                      p{{comentarios.estrellas}}
+                      cite Por: {{comentarios.autor}}
+                    select.form-control(ng-model="model.estrellas",required)
+                          option(value='' selected disabled) Selecciona la Calificacion
+                          option(value='1') 1 Estrella
+                          option(value='2') 2 Estrellas
+                          option(value='3') 3 Estrellas
+                          option(value='4') 4 Estrellas
+                          option(value='5') 5 Estrellas
+                        br
+                    textarea.form-control(rows='3',placeholder='Escriba un corto comentario acerca del Libro',ng-model="model.cuerpo")
+                    br
+                    .input-group
+                      span.input-group-addon Por:
+                      input.form-control(type='email', placeholder='Digite correo electronico',ng-model="model.autor")
+                    br
+                    button.btn.btn-default(type='submit', novalidate) Agregar Comentario
+
+
+            
+          br 
+        
+               
         hr
     
      // p Mensaje: {{ msg }}
     .col-md-2
-    
+      
   hr
+  
   //br
   //br
   //p {{ msg }}
