@@ -1,6 +1,7 @@
 app.controller('BooksController', BooksController);
 app.controller('PanelController', PanelController);
 app.controller('ReviewController', ReviewController);
+app.controller('RegisterController', RegisterController);
 
   BooksController.$inject = ['$scope'];
   function BooksController($scope){
@@ -42,3 +43,23 @@ app.controller('ReviewController', ReviewController);
      };
       
   }
+RegisterController.$inject = ['$scope', '$window', '$location'];
+function RegisterController($scope, $window, $location) {
+    $scope.model = {};
+    $scope.model.password = "";
+    $scope.flag = false;
+
+    $scope.$watch('model.confirm_password', function (newValue, oldValue) {        
+        if (newValue === $scope.model.password && newValue.length > 0 && $scope.model.password.length > 0){
+            $scope.flag = true;            
+        }else{
+            $scope.flag = false;
+        }
+    });
+    $scope.submit = function(){
+        console.log("entra");
+        $window.open("/", "_self");
+        //$location.path('/someNewPath')
+        //$location.href = "/";
+    };
+}
